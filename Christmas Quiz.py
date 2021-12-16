@@ -9,7 +9,8 @@ class Quiz:
                         2 : self.addQuestion,
                         3 : self.removeQuestion,
                         4 : self.saveQuestionsToFile,
-                        5 : self.loadQuestionsFromFile
+                        5 : self.loadQuestionsFromFile,
+                        6 : self.printQuestions
         }
         print("\n>----< WELCOME TO THE XMAS QUIZ >----<")
 
@@ -18,7 +19,7 @@ class Quiz:
         questionNumber = 1
         if(len(self.allQuestions) == 0):
             print("\nNo Questions currently in the quiz")
-            return
+            return 
         for x in self.allQuestions:
             print("Question ", questionNumber, ": ", x.question)
             questionNumber += 1
@@ -99,6 +100,9 @@ class Quiz:
         print("\n\t[Saved ",len(self.allQuestions)," questions]")
 
     def loadQuestionsFromFile(self):
+        if not (os.path.isfile(os.path.join(os.path.dirname(__file__),'christmasQuestions.txt'))):
+            print("\nCurrently no file saved on your device")
+            return
         if(len(self.allQuestions) > 0):
             answer = ""
             while answer != 'n' and answer != 'y':
@@ -115,6 +119,14 @@ class Quiz:
                 self.allQuestions.append(newQuestion)
         print("\n\t[Loaded ",len(self.allQuestions)," questions]")
 
+    def printQuestions(self):
+        for x in self.allQuestions:
+            print("\n",x.question,"\n")
+            choiceCounter = 1
+            for y in x.options:
+                print(choiceCounter, ": ", y)
+                choiceCounter+=1
+
 class Question:
     def __init__(self, question, options, answer):
         self.question = question
@@ -129,10 +141,10 @@ quizInstance = Quiz()
 
 while True:
     try:
-        choice = int(input("\nWhat do you want to do in your quiz? \n1 - run the quiz\n2 - add a question\n3 - delete questions\n4 - save to file\n5 - load from file\n6 - exit\t"))    
-        if(choice == 6):
+        choice = int(input("\nWhat do you want to do in your quiz? \n1 - run the quiz\n2 - add a question\n3 - delete questions\n4 - save to file\n5 - load from file\n6 - print out currently loaded questions\n7 - exit\t"))    
+        if(choice == 7):
             break
         else:
             quizInstance.options[int(choice)]()
     except:
-        print("\nThat's not a number between 1 and 6")
+        print("\nThat's not a number between 1 and 7")
